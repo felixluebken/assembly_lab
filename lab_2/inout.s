@@ -8,8 +8,8 @@
 .text
 titlestr:    	.asciz "Felix Luebken, Taco Timmers\n2687994, 2809762\nAssignment 2: inout\n"
 prompt:		.asciz "Please input a number: "
-inputformat:    .asciz "%ld"
-outputformat:   .asciz "Your incremented number: %ld\n"
+inputfmt:    .asciz "%ld"
+outputfmt:   .asciz "Your incremented number: %ld\n"
 
 
 
@@ -46,7 +46,7 @@ inout:
 
 	subq	$8, %rsp		#reserves stack space
 	leaq	-16(%rbp), %rsi		#load address of stack var in rsi
-	movq	$inputformat, %rdi	#loads first arg of scanf
+	movq	$inputfmt, %rdi		#loads inputfmt
 	call	scanf			#call scanf
 
 	addq	$8, %rsp		
@@ -56,7 +56,7 @@ inout:
 	movq	%rbx, %rsi		#moves variable into rsi
 
 	movq    $0, %rax                #no vector registers for print
-	movq 	$outputformat, %rdi	#load string outputformat
+	movq 	$outputfmt, %rdi	#load string outputfmt
 	call	printf			#call printf
 
 	ret
