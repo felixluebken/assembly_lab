@@ -1,19 +1,23 @@
 #************************************************************************
-#*  PROGRAM NAME: In Out                                   	        *
-#*  DESCRIPTION:  Demonstrates user input / output in x86-64 assembly . *
-#*  AUTHORS:      Felix Luebken & Taco Timmers                          *
+#   PROGRAM NAME: In Out                                   	        
+#   DESCRIPTION:  Demonstrates user input / output in x86-64 assembly . 
+#   AUTHORS:      Felix Luebken & Taco Timmers                          
 #************************************************************************
+
 
 .text
 titlestr:    	.asciz "Felix Luebken, Taco Timmers\n2687994, 2809762\nAssignment 2: inout\n"
-promt:		.asciz "Please input a number: "
-response:	.asciz "Your incremented number: "
-formatstr:	.asciz "%ld"
+prompt:		.asciz "Please input a number: "
+inputformat:    .asciz "%ld"
+outputformat:   .asciz "Your incremented number: %ld\n"
+
+
+
 
 .global main
 #************************************************************************
-#*  SUBROUTINE:   main                                                  *
-#*  DESCRIPTION:  main routine 	                                        *
+#   SUBROUTINE:   main                                                  
+#   DESCRIPTION:  main routine 	                                        
 #************************************************************************
 main:
         pushq   %rbp                    #store the caller's base pointer
@@ -23,30 +27,39 @@ main:
         movq    $titlestr, %rdi         #load string titlestr
         call    printf                  #call printf subroutine
 
-        jmp	inout			#call inout subroutine
+	call 	inout			#call inout subroutine
+	jmp 	end			#exits program
 
-	jmp     end                     #call end subroutine
-
-
+#************************************************************************
+#   SUBROUTINE:	 inout
+#   DESCRIPTION: prints a incremented prompted number
+#************************************************************************
 inout:
-	pushq	 %rbp			#store the caller's base pointer
-	movq	 %rsp, %rbp		#initialize the base pointer
+	pushq	%rbp			#store the caller's base pointer
+	movq	%rsp, %rbp		#initialize the base pointer
 
-	movq	$0, %rax		#no vector registers
-	
-	movq	$promt, %rdi		#load string promt
+	movq	$0, %rax		#no vector registers for printf
+	movq	$prompt, %rdi		#load string promt
 	call	printf			#call printf
 
-	subq	$8, %rsp		#reserves stack space for var
-	leaq	-8(%rbp), %rsi		#load address of stack var in rsi
- 	movq	$formatstr, %rdi	#loads first arg of scanf
+	addq	$8, %rsp
 
+	subq	$8, %rsp		#reserves stack space
+	leaq	-16(%rbp), %rsi		#load address of stack var in rsi
+	movq	$inputformat, %rdi	#loads first arg of scanf
 	call	scanf			#call scanf
 
-	incq	-8(%rbp)
+	addq	$8, %rsp		
 
-	movq	-8(%rbp),%rdi
-	call	printf
+	movq 	-16(%rbp), %rbx		#moves variable into rbx
+	incq	%rbx			#increments variable
+	movq	%rbx, %rsi		#moves variable into rsi
+
+	movq    $0, %rax                #no vector registers for print
+	movq 	$outputformat, %rdi	#load string outputformat
+	call	printf			#call printf
+
+	ret
 
 end:
         mov     $0, %rdi                #loads exit code
