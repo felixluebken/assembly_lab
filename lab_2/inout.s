@@ -7,9 +7,9 @@
 
 .text
 titlestr:    	.asciz "Felix Luebken, Taco Timmers\n2687994, 2809762\nAssignment 2: inout\n"
-prompt:		.asciz "Please input a number: "
-inputfmt:    .asciz "%ld"
-outputfmt:   .asciz "Your incremented number: %ld\n"
+prompt:	        .asciz "Please input a number: "
+inputfmt:   	 .asciz "%ld"
+outputfmt:  	 .asciz "Your incremented number: %ld\n"
 
 
 
@@ -28,7 +28,8 @@ main:
         call    printf                  #call printf subroutine
 
 	call 	inout			#call inout subroutine
-	jmp 	end			#exits program
+
+	jmp 	end
 
 #************************************************************************
 #   SUBROUTINE:	 inout
@@ -37,19 +38,15 @@ main:
 inout:
 	pushq	%rbp			#store the caller's base pointer
 	movq	%rsp, %rbp		#initialize the base pointer
-
+	subq	$16, %rsp		#resize the stack
+	
 	movq	$0, %rax		#no vector registers for printf
 	movq	$prompt, %rdi		#load string promt
 	call	printf			#call printf
 
-	addq	$8, %rsp
-
-	subq	$8, %rsp		#reserves stack space
 	leaq	-16(%rbp), %rsi		#load address of stack var in rsi
 	movq	$inputfmt, %rdi		#loads inputfmt
 	call	scanf			#call scanf
-
-	addq	$8, %rsp		
 
 	movq 	-16(%rbp), %rbx		#moves variable into rbx
 	incq	%rbx			#increments variable
@@ -62,6 +59,9 @@ inout:
 	ret
 
 end:
-        mov     $0, %rdi                #loads exit code
+        
+	mov     $0, %rdi                #loads exit code
         call    exit                    #exits the program
+
+
 
