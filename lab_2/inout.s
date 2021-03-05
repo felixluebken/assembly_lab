@@ -29,7 +29,7 @@ main:
 
 	call 	inout			#call inout subroutine
 
-	jmp 	end
+#	jmp 	end
 
 #************************************************************************
 #   SUBROUTINE:	 inout
@@ -56,7 +56,9 @@ inout:
 	movq 	$outputfmt, %rdi	#load string outputfmt
 	call	printf			#call printf
 
-	ret
+#	ret
+
+	jmp	end
 
 end:
         
