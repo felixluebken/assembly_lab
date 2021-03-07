@@ -1,0 +1,28 @@
+/**
+* This subroutine calculates the power, given a base and an exponent.
+* It only works with positive and natural numbers (base & exponent)
+*
+* ARGS:
+*       base - the base for the exponent
+*       exp  - the exponent
+*
+*
+* RETURN:
+*       Final value of the base raised to the exponent
+*/
+
+int pow (int base, int exp) {
+	int total = base;
+	
+	while(exp != 0) {
+		total = total * base;
+		exp--;
+	}
+
+
+	return total;
+
+
+
+}
+

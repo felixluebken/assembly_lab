@@ -1,0 +1,25 @@
+/**
+* This subroutine calculates the power, given a base and an exponent.
+* It only works with positive and natural numbers (base & exponent)
+*
+* ARGS:
+*       num 	- the value of the factorial number 
+*       result  - the value of the factorial number
+*
+*
+* RETURN:
+*       result	- the final value of the result
+*/
+
+
+int factorial(int num, int result) {
+	
+        if(num == 0) {
+                return result;
+        } else {
+		num--;
+		result = result * num;
+		factorial(num,result);
+	}
+}
+~         
