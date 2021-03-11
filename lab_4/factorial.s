@@ -76,6 +76,9 @@ factorial:
 	cmpq	$1, -8(%rbp)		#if value is 1
 	je	break			#then jump to break
 
+	cmpq	$0, -8(%rbp)		#if vvalue is 0
+	je	break			#then jump to break
+
 	decq	-8(%rbp)		#decrease value by 1
 	mulq	-8(%rbp)		#multiply rax by value
 
